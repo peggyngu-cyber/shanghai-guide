@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shanghai + Suzhou Citywalk Guide</title>
+<style>
+:root {
+  --gold: #C9A96E;
+  --gold-light: #E8D5A8;
+  --gold-dark: #A8893E;
+  --dark: #1A1A2E;
+  --dark2: #222240;
+  --text: #2C2C2C;
+  --text-light: #6B6B80;
+  --bg: #FAFAFA;
+  --card-bg: #F5F5F7;
+  --white: #FFFFFF;
+  --border: #E8E8ED;
+  --radius: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+a { color: var(--gold-dark); text-decoration: none; }
+
+/* ===== HEADER ===== */
+.hero {
+  background: linear-gradient(135deg, var(--dark) 0%, var(--dark2) 100%);
+  color: var(--white);
+  padding: 60px 24px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+}
+.hero h1 { font-size: 32px; font-weight: 800; letter-spacing: 2px; }
+.hero .subtitle { color: var(--gold); font-size: 14px; letter-spacing: 4px; margin: 8px 0 4px; text-transform: uppercase; }
+.hero .dates { color: var(--gold-light); font-size: 13px; margin: 12px 0 4px; }
+.hero .tagline { color: rgba(255,255,255,0.5); font-size: 12px; }
+.hero .hotel { color: var(--gold-light); font-size: 11px; margin-top: 16px; opacity: 0.7; }
+
+/* ===== NAV ===== */
+.toc { background: var(--white); padding: 20px 24px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+.toc summary { font-weight: 700; font-size: 14px; color: var(--dark); cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; }
+.toc summary::after { content: '▾'; font-size: 12px; color: var(--gold); transition: transform .2s; }
+.toc[open] summary::after { transform: rotate(180deg); }
+.toc-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 12px; }
+.toc-nav a { font-size: 12px; padding: 6px 10px; background: var(--card-bg); border-radius: 6px; color: var(--text); }
+.toc-nav a:hover { background: var(--gold-light); color: var(--dark); }
+
+/* ===== SECTIONS ===== */
+.section { padding: 24px; }
+.section-header {
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.section-header .emoji { font-size: 22px; }
+.section-header h2 { font-size: 20px; font-weight: 700; color: var(--dark); }
+.section-header .date-badge {
+  font-size: 11px;
+  background: var(--gold);
+  color: var(--white);
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  margin-left: auto;
+}
+.section-header .location { font-size: 12px; color: var(--text-light); }
+
+/* ===== DAY CARD ===== */
+.day-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
+}
+.day-card .day-header {
+  background: linear-gradient(135deg, var(--dark), var(--dark2));
+  padding: 16px 20px;
+  position: relative;
+}
+.day-card .day-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+}
+.day-card .day-header .label { color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 2px; }
+.day-card .day-header .date { color: var(--gold-light); font-size: 11px; float: right; }
+.day-card .day-header h3 { color: var(--white); font-size: 17px; margin: 6px 0 2px; }
+.day-card .day-header .theme { color: rgba(255,255,255,0.6); font-size: 12px; }
+
+.day-body { padding: 16px 20px; }
+
+/* Intro */
+.intro-list { margin-bottom: 16px; }
+.intro-item { display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; }
+.intro-item .emoji { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.intro-item .text { font-size: 13px; line-height: 1.7; color: var(--text); }
+.intro-item .text strong { color: var(--dark); }
+
+/* Timeline */
+.timeline { margin: 16px 0; border-left: 3px solid var(--gold); padding-left: 12px; }
+.tl-item { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+.tl-time {
+  background: var(--dark);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 48px;
+  text-align: center;
+}
+.tl-activity { font-size: 13px; color: var(--text); }
+
+/* Info Grid */
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+.info-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+}
+.info-card h4 { font-size: 12px; font-weight: 700; color: var(--dark); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.info-card ul { list-style: none; font-size: 12px; line-height: 1.8; color: var(--text); }
+.info-card ul li::before { content: '· '; color: var(--gold); font-weight: 700; }
+.full-width { grid-column: 1 / -1; }
+
+/* ===== SPECIAL SECTIONS ===== */
+/* Shopping */
+.shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.shop-card {
+  background: var(--white);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.shop-card .shop-header {
+  background: var(--dark);
+  color: var(--white);
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.shop-card .shop-header .day-tag { font-size: 10px; background: var(--gold); color: var(--white); padding: 1px 8px; border-radius: 10px; font-weight: 600; }
+.shop-card .shop-body { padding: 10px 14px; font-size: 12px; line-height: 1.8; color: var(--text); }
+
+/* Night Views */
+.night-tier { margin-bottom: 16px; }
+.night-tier h3 { font-size: 14px; font-weight: 700; color: var(--gold-dark); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.night-tier h3::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); }
+.night-item { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+.night-item .num { font-size: 14px; flex-shrink: 0; width: 28px; }
+.night-item .text { font-size: 13px; line-height: 1.5; }
+.night-item .text .time { color: var(--gold-dark); font-weight: 600; }
+
+/* Combo */
+.combo-list { list-style: none; }
+.combo-list li { padding: 10px 0; border-bottom: 1px solid var(--border); }
+.combo-list li:last-child { border: none; }
+.combo-list .combo-title { font-weight: 700; font-size: 13px; }
+.combo-list .combo-route { font-size: 12px; color: var(--text-light); }
+.combo-list .combo-day { font-size: 11px; color: var(--gold-dark); font-weight: 600; }
+
+/* TOP 10 */
+.top-list { list-style: none; counter-reset: top; }
+.top-list li {
+  counter-increment: top;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+.top-list li::before {
+  content: '#' counter(top);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--gold);
+  background: var(--card-bg);
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.top-list .top-info { flex: 1; }
+.top-list .top-name { font-size: 13px; font-weight: 700; }
+.top-list .top-time { font-size: 11px; color: var(--gold-dark); font-weight: 600; }
+.top-list .top-desc { font-size: 11px; color: var(--text-light); }
+
+/* Store Hours */
+.hours-group { margin-bottom: 12px; }
+.hours-group h4 { font-size: 13px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+.hours-table { width: 100%; font-size: 12px; border-collapse: collapse; }
+.hours-table td { padding: 4px 8px; border-bottom: 1px solid var(--border); }
+.hours-table td:last-child { text-align: right; color: var(--text-light); font-weight: 600; }
+
+/* Chain Stores */
+.chain-group { margin-bottom: 12px; padding: 10px 14px; background: var(--white); border: 1px solid var(--border); border-radius: 8px; }
+.chain-group h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.chain-group p { font-size: 12px; color: var(--text); line-height: 1.7; }
+.chain-group .tag { font-size: 10px; color: var(--gold-dark); font-weight: 600; }
+
+/* BONUS */
+.bonus-tips { background: var(--dark); color: var(--white); padding: 14px; border-radius: 8px; margin-top: 12px; }
+.bonus-tips h4 { color: var(--gold); font-size: 13px; margin-bottom: 6px; }
+.bonus-tips p { font-size: 12px; color: rgba(255,255,255,0.8); line-height: 1.7; }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 40px 24px;
+  background: linear-gradient(135deg, var(--dark), var(--dark2));
+  color: var(--white);
+}
+.footer h2 { font-size: 20px; font-weight: 800; letter-spacing: 2px; }
+.footer .gold { color: var(--gold); }
+.footer .dates { color: rgba(255,255,255,0.4); font-size: 12px; margin-top: 8px; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+  .hero h1 { font-size: 26px; }
+  .info-grid { grid-template-columns: 1fr; }
+  .shop-grid { grid-template-columns: 1fr; }
+  .toc-nav { grid-template-columns: 1fr; }
+}
+@media (min-width: 768px) {
+  .hero { padding: 80px 40px 60px; }
+  .hero h1 { font-size: 42px; }
+  .section { padding: 32px 40px; max-width: 900px; margin: 0 auto; }
+  .day-card .day-header { padding: 20px 28px; }
+  .day-card .day-header h3 { font-size: 20px; }
+  .day-body { padding: 20px 28px; }
+  .info-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="subtitle">Travel Guide</div>
+  <h1>SUZHOU + SHANGHAI</h1>
+  <p class="tagline">梧桐光影 · 法式摩登 · 未来天际线 · 湖光晚霞</p>
+  <p class="dates">June 27 → July 5, 2026 · 10 Days</p>
+  <p class="hotel">🏨 上海静安区康柏酒店 · 苏州自行入住</p>
+</header>
+
+<!-- ===== TOC ===== -->
+<details class="toc" open>
+  <summary>📖 目录 · 快速导航</summary>
+  <nav class="toc-nav">
+    <a href="#pretrip">行前准备</a>
+    <a href="#booking">预约清单</a>
+    <a href="#transport">交通速查</a>
+    <a href="#sz1">苏州 Day 1</a>
+    <a href="#sz2">苏州 Day 2</a>
+    <a href="#sz3">苏州 Day 3</a>
+    <a href="#sh1">上海 Day 1</a>
+    <a href="#sh2">上海 Day 2</a>
+    <a href="#sh3">上海 Day 3</a>
+    <a href="#sh4">上海 Day 4</a>
+    <a href="#sh5">上海 Day 5</a>
+    <a href="#sh6">上海 Day 6</a>
+    <a href="#sh7">上海 Day 7</a>
+    <a href="#shopping">逛街篇 1-8</a>
+    <a href="#night">夜景全攻略</a>
+    <a href="#top10">TOP 10 机位</a>
+    <a href="#hours">营业时间</a>
+    <a href="#chains">连锁分店</a>
+    <a href="#maglev">磁浮说明</a>
+    <a href="#bonus">北外滩 Bonus</a>
+  </nav>
+</details>
+<script>
+document.querySelector('.toc').addEventListener('click', function(e) {
+  if (e.target.tagName === 'A') this.removeAttribute('open');
+});
+</script>
+
+<!-- ========================================= -->
+<!-- PRE-TRIP -->
+<!-- ========================================= -->
+<section class="section" id="pretrip">
+<div class="section-header"><span class="emoji">📋</span><h2>行前准备</h2></div>
+
+<div class="day-card">
+<div class="day-body">
+<div class="intro-item"><span class="emoji">🏙️</span><div class="text"><strong>上海</strong> · 人口约2500万。法租界梧桐街道是Citywalk核心区域。陆家嘴三件套（上海中心632m·环球金融492m·金茂420m）构成全球第二高天际线。</div></div>
+<div class="intro-item"><span class="emoji">🏛️</span><div class="text"><strong>苏州</strong> · 建城于公元前514年（春秋吴国），2500+年历史。古典园林世界文化遗产（1997年），现存50+座。苏州博物馆由贝聿铭设计（2006年）。</div></div>
+<div class="intro-item"><span class="emoji">☀️</span><div class="text"><strong>天气</strong> · 六月底七月初30-35°C，湿度高，午后可能有雷阵雨。上海日落约19:00，苏州日落约19:10。蓝色时刻19:00-19:30。</div></div>
+<div class="intro-item"><span class="emoji">👔</span><div class="text"><strong>穿搭</strong> · 轻薄短袖+短裤/裙子，薄外套（地铁冷气强）。舒适好走的鞋（苏州石板路多）。小风扇+防晒喷雾+纸巾（吃生煎会用到）。</div></div>
+<div class="intro-item"><span class="emoji">📸</span><div class="text"><strong>拍照黄金时段</strong> · 09:30-11:00 梧桐光影最美 / 16:00-18:00 外滩黄金光线 / 19:00-19:30 蓝色时刻</div></div>
+<div class="intro-item"><span class="emoji">💳</span><div class="text"><strong>支付</strong> · 微信支付/支付宝（新加坡卡可绑定）</div></div>
+<div class="intro-item"><span class="emoji">📱</span><div class="text"><strong>必备APP</strong> · 大众点评·小红书·地铁通·苏州博物馆预约·上海中心小程序</div></div>
+</div></div>
+
+<div class="day-card">
+<div class="day-header"><span class="label">🌤️ 夏季控温策略</span></div>
+<div class="day-body">
+<table class="hours-table">
+<tr><td>09:30-11:00</td><td>🌤️ 户外黄金光线·拍照窗口</td></tr>
+<tr><td>11:00-14:30</td><td>☀️ 暴晒时段·必须室内（博物馆/咖啡/买手店）</td></tr>
+<tr><td>14:30-16:00</td><td>🌤️ 可适度户外</td></tr>
+<tr><td>16:00-18:00</td><td>📸 梧桐光影+外滩黄金光线</td></tr>
+<tr><td>19:00-19:30</td><td>🌆 蓝色时刻·夜景拍摄</td></tr>
+</table>
+</div></div>
+</section>
+
+<!-- ========================================= -->
+<!-- BOOKING -->
+<!-- ========================================= -->
+<section class="section" id="booking">
+<div class="section-header"><span class="emoji">🎫</span><h2>必抢预约清单</h2><span class="date-badge">⚠️ 到了酒店第一件事</span></div>
+
+<div class="info-grid">
+<div class="info-card full-width" style="background:#1A1A2E;color:white;">
+  <h4 style="color:#C9A96E;">💡 6/29中午12:00到酒店第一件事：抢交响音乐博物馆！</h4>
+  <p style="font-size:12px;color:rgba(255,255,255,0.7);">然后立刻约博物馆东馆·城市规划馆·朵云书院</p>
+</div>
+
+<div class="info-card">
+  <h4>⭐⭐⭐⭐⭐ 交响音乐博物馆</h4>
+  <ul><li>最难抢！提前3天12:00开放预约</li><li>小程序抢</li></ul>
+</div>
+<div class="info-card">
+  <h4>⭐⭐⭐ 上海博物馆东馆</h4>
+  <ul><li>提前7天预约·周一闭馆</li><li>新馆常设展免费</li></ul>
+</div>
+<div class="info-card">
+  <h4>⭐⭐ 城市规划展示馆</h4>
+  <ul><li>提前7天预约·周一闭馆</li><li>巨型沙盘震撼</li></ul>
+</div>
+<div class="info-card">
+  <h4>⭐⭐ 朵云书院 52F</h4>
+  <ul><li>"上海中心"小程序预约</li><li>需买一杯饮料入场</li></ul>
+</div>
+<div class="info-card">
+  <h4>⭐ 宋庆龄故居</h4>
+  <ul><li>提前1-3天预约</li></ul>
+</div>
+<div class="info-card">
+  <h4>⭐ 徐家汇书院</h4>
+  <ul><li>部分区域提前1天预约</li></ul>
+</div>
+<div class="info-card">
+  <h4>⭐ 思南公馆</h4>
+  <ul><li>部分场馆提前1天预约</li></ul>
+</div>
+</div>
+</section>
+
+<!-- ========================================= -->
+<!-- TRANSPORT -->
+<!-- ========================================= -->
+<section class="section" id="transport">
+<div class="section-header"><span class="emoji">🚇</span><h2>交通速查</h2><span class="date-badge">上海·静安康柏酒店出发</span></div>
+
+<div class="day-card">
+<div class="day-body">
+<table class="hours-table">
+<tr><td>🚶 张园/南京西路</td><td>8min</td><td>南京西路向东</td></tr>
+<tr><td>🚶 巨富长</td><td>15min</td><td>南京西路→陕西南路</td></tr>
+<tr><td>🚕 武康大楼</td><td>10min</td><td>或地铁2→10号线</td></tr>
+<tr><td>🚇 外滩</td><td>25min</td><td>2号线南京东路站</td></tr>
+<tr><td>🚇 徐家汇</td><td>20min</td><td>2号线→1号线</td></tr>
+<tr><td>🚇 西岸美术馆</td><td>35min</td><td>龙华中路站</td></tr>
+<tr><td>🚇 前滩太古里</td><td>40min</td><td>2→8→6号线东方体育中心</td></tr>
+<tr><td>🚇 北外滩/苏州河</td><td>20min</td><td>10/12号线天潼路站</td></tr>
+<tr><td>🚇 上海博物馆东馆</td><td>35min</td><td>2号线科技馆站</td></tr>
+<tr><td>🚇 豫园</td><td>25min</td><td>2→10号线豫园站</td></tr>
+<tr><td>🚕 浦东机场</td><td>50-60min</td><td>¥180-220</td></tr>
+</table>
+</div></div>
+</section>
+
+<!-- ========================================= -->
+<!-- SUZHOU DAY 1 -->
+<!-- ========================================= -->
+<section class="section" id="sz1">
+<div class="section-header"><span class="emoji">🏯</span><h2>苏州 Day 1</h2><span class="date-badge">June 27 · Sat</span></div>
+<div style="font-size:13px;color:var(--text-light);margin:-12px 0 16px;">拙政园 × 苏博 × 平江路 × Citywalk × 山塘街</div>
+
+<div class="day-card">
+<div class="day-header">
+  <span class="label">SUZHOU DAY 1</span><span class="date">June 27 · Sat</span>
+  <h3>拙政园 × 苏州博物馆 × 平江路 × Citywalk × 山塘街</h3>
+  <div class="theme">🏯 老城文化 · 园林光影 · 咖啡Citywalk · 水乡夜景</div>
+</div>
+<div class="day-body">
+
+<div class="intro-list">
+<div class="intro-item"><span class="emoji">🏯</span><div class="text"><strong>拙政园</strong> · 中国四大名园（1509年），不进园也好拍白墙黛瓦护城河倒影。</div></div>
+<div class="intro-item"><span class="emoji">🏛️</span><div class="text"><strong>苏州博物馆</strong> · 贝聿铭封山之作（2006年）。白墙黛瓦几何光影。⚠️提前7天预约·周一闭馆。</div></div>
+<div class="intro-item"><span class="emoji">🏮</span><div class="text"><strong>平江路</strong> · 「水陆并行·河街相邻」的江南老街1.6km，苏州最有生活气息的街区。</div></div>
+<div class="intro-item"><span class="emoji">🌉</span><div class="text"><strong>山塘街</strong> · 白居易825年主持开凿，七里山塘至今1200年。灯笼石桥小船倒影。</div></div>
+</div>
+
+<h4 style="font-size:13px;margin:12px 0 8px;display:flex;align-items:center;gap:6px;">⏱ 动线</h4>
+<div class="timeline">
+<div class="tl-item"><span class="tl-time">11:00</span><span class="tl-activity">🚗 抵达苏州·放行李</span></div>
+<div class="tl-item"><span class="tl-time">11:30</span><span class="tl-activity">🏯 拙政园外拍（不进园·20min）</span></div>
+<div class="tl-item"><span class="tl-time">12:00</span><span class="tl-activity">🏛️ 苏州博物馆（贝聿铭）</span></div>
+<div class="tl-item"><span class="tl-time">13:00</span><span class="tl-activity">🍽️ 观前街午餐·黄天源/三万昌</span></div>
+<div class="tl-item"><span class="tl-time">14:30</span><span class="tl-activity">🏮 平江路·梅花糕·鑫震源·羍市</span></div>
+<div class="tl-item"><span class="tl-time">16:30</span><span class="tl-activity">🚶 Citywalk·乌鹊桥→十全街→锦帆路→西美巷</span></div>
+<div class="tl-item"><span class="tl-time">19:00</span><span class="tl-activity">🌙 山塘街夜景·山塘桥日落🏆</span></div>
+<div class="tl-item"><span class="tl-time">20:00</span><span class="tl-activity">🛏️ 回酒店休息</span></div>
+</div>
+
+<div class="info-grid">
+<div class="info-card">
+  <h4>🍜 必吃美食</h4>
+  <ul>
+    <li>鑫震源·平江路·大虾生煎/纸皮烧麦</li>
+    <li>梅月轩梅花糕·平江路·8元枣泥红豆</li>
+    <li>小姜锅贴·十全街·爆汁锅贴17年老店</li>
+    <li>原点食堂·十全街·炸猪排/炒饭</li>
+  </ul>
+</div>
+<div class="info-card">
+  <h4>☕ Citywalk咖啡</h4>
+  <ul>
+    <li>🥇 粗盐咖啡·乌鹊桥路·苏州三巨头</li>
+    <li>🥇 C点咖啡·锦帆路·最早精品咖啡</li>
+    <li>🥇 囍咖啡·十梓街·冠军拉花可抽签</li>
+    <li>🥇 KUN咖啡·西美巷·昆曲主题</li>
+  </ul>
+</div>
+<div class="info-card">
+  <h4>📸 必拍机位</h4>
+  <ul>
+    <li>🥇 苏博中央水池·贝聿铭光影</li>
+    <li>🥇 山塘桥日落·18:40-19:20</li>
+    <li>🥈 拙政园门口·护城河倒影</li>
+  </ul>
+</div>
+<div class="info-card">
+  <h4>🚇 交通+时间</h4>
+  <ul>
+    <li>苏州站打车15min到拙政园区域</li>
+    <li>苏博09:00-17:00·周一闭馆</li>
+    <li>山塘夜景最佳18:40-19:20</li>
+  </ul>
+</div>
+<div class="info-card full-width">
+  <h4>🍞 可选美食</h4>
+  <ul>
+    <li>黄天源·三万昌·同得兴（观前街）·老鲨鱼披萨（平桥直街）</li>
+    <li>PUPURING布丁·波福面包·大豆dado·满仓面包·baob德国面包房</li>
+    <li>Masa雄七台式酒场·KACHI韩食·Sleeping Dog·KIDSMO</li>
+  </ul>
+</div>
+</div>
+
+</div></div>
+</section>
+
+<!-- ========================================= -->
+<!-- SUZHOU DAY 2 -->
+<!-- ========================================= -->
+<section class="section" id="sz2">
+<div class="section-header"><span class="emoji">🏙️</span><h2>苏州 Day 2</h2><span class="date-badge">June 28 · Sun</span></div>
+<div style="font-size:13px;color:var(--text-light);margin:-12px 0 16px;">苏州中心 × 东方之门 × 诚品 × 金鸡湖日落</div>
+
+<div class="day-card">
+<div class="day-header">
+  <span class="label">SUZHOU DAY 2</span><span class="date">June 28 · Sun</span>
+  <h3>苏州中心 × 东方之门 × 诚品书店 × 金鸡湖</h3>
+  <div class="theme">🏙️ 城市线条 · 湖面晚霞 · 音乐喷泉</div>
+</div>
+<div class="day-body">
+<div class="intro-list">
+<div class="intro-item"><span class="emoji">🏬</span><div class="text"><strong>苏州中心</strong> · 苏州最大商场（113万㎡·2017年），金鸡湖商圈核心地标。</div></div>
+<div class="intro-item"><span class="emoji">🏙️</span><div class="text"><strong>东方之门</strong> · 苏州新地标（301.8m），被誉为「世界第一门」。</div></div>
+<div class="intro-item"><span class="emoji">📚</span><div class="text"><strong>诚品书店</strong> · 台湾诚品大陆首店（2015年），5.6万㎡生活方式空间。</div></div>
+<div class="intro-item"><span class="emoji">🌅</span><div class="text"><strong>金鸡湖</strong> · 中国最大城市内湖（7.4km²）。日落天堂，月光码头最稳最佳。</div></div>
+</div>
+
+<h4 style="font-size:13px;margin:12px 0 8px;">⏱ 动线</h4>
+<div class="timeline">
+<div class="tl-item"><span class="tl-time">10:00</span><span class="tl-activity">🏬 苏州中心广场·吃喝买</span></div>
+<div class="tl-item"><span class="tl-time">12:00</span><span class="tl-activity">🏙️ 东方之门·白天拍建筑线条</span></div>
+<div class="tl-item"><span class="tl-time">13:00</span><span class="tl-activity">🍽️ 苏州中心内午餐</span></div>
+<div class="tl-item"><span class="tl-time">14:00</span><span class="tl-activity">📚 诚品书店·文青必去</span></div>
+<div class="tl-item"><span class="tl-time">16:00</span><span class="tl-activity">🌅 金鸡湖日落路线出发</span></div>
+<div class="tl-item"><span class="tl-time">18:30</span><span class="tl-activity">🥇 月光码头·湖面反光🏆</span></div>
+<div class="tl-item"><span class="tl-time">19:00</span><span class="tl-activity">🥈 金水湾栈桥·帆船剪影</span></div>
+<div class="tl-item"><span class="tl-time">19:30</span><span class="tl-activity">🎆 音乐喷泉·19:30-20:00</span></div>
+<div class="tl-item"><span class="tl-time">20:00</span><span class="tl-activity">🌙 李公堤夜景散步</span></div>
+</div>
+
+<div class="info-grid">
+<div class="info-card"><h4>🍜 美食</h4><ul><li>苏州中心内餐厅（选择多）</li><li>苏雅兴·苏祥兴（金鸡湖景）</li></ul></div>
+<div class="info-card"><h4>📸 机位</h4><ul><li>🥇 月光码头·18:30-19:20</li><li>🥈 金水湾栈桥·帆船延伸</li><li>🥉 东方之门滨湖步道</li></ul></div>
+<div class="info-card"><h4>🎆 喷泉</h4><ul><li>19:30-20:00·周五六固定开放</li></ul></div>
+<div class="info-card"><h4>🚇 交通</h4><ul><li>市区打车到苏州中心10-15min</li></ul></div>
+</div>
+</div></div>
+</section>
+
+<!-- ========================================= -->
+<!-- SUZHOU DAY 3 -->
+<!-- ========================================= -->
+<section class="section" id="sz3">
+<div class="section-header"><span class="emoji">🚄</span><h2>苏州 Day 3</h2><span class="date-badge">June 29 · Mon</span></div>
+<div style="font-size:13px;color:var(--text-light);margin:-12px 0 16px;">淮海街 → 上海 🚄</div>
+
+<div class="day-card">
+<div class="day-header">
+  <span class="label">SUZHOU DAY 3</span><span class="date">June 29 · Mon</span>
+  <h3>淮海街 × 可选园林 → 上海</h3>
+  <div class="theme">🚄 最后的扫街 · 高铁回沪接上海Day1</div>
+</div>
+<div class="day-body">
+<div class="intro-list">
+<div class="intro-item"><span class="emoji">🛍️</span><div class="text"><strong>淮海街</strong> · 苏州「韩国街」，日韩风格店铺密集，适合早上散步喝咖啡。</div></div>
+<div class="intro-item"><span class="emoji">🏯</span><div class="text"><strong>藕园</strong> · 小而安静的世界文化遗产（可选）。<strong>留园</strong> · 中国四大名园，更大更经典（可选）。</div></div>
+</div>
+
+<div class="timeline">
+<div class="tl-item"><span class="tl-time">08:00</span><span class="tl-activity">😴 自然醒·收拾行李</span></div>
+<div class="tl-item"><span class="tl-time">09:00</span><span class="tl-activity">🛍️ 淮海街散步+咖啡</span></div>
+<div class="tl-item"><span class="tl-time">09:30</span><span class="tl-activity">🌿 可选·藕园(小安静)/留园(大经典)</span></div>
+<div class="tl-item"><span class="tl-time">10:00</span><span class="tl-activity">🚄 苏州站→高铁回上海·30min</span></div>
+</div>
+
+<div class="info-grid">
+<div class="info-card"><h4>🍜 美食</h4><ul><li>淮海街小吃·咖啡·轻食</li></ul></div>
+<div class="info-card"><h4>📸 机位</h4><ul><li>淮海街·韩系街道招牌</li><li>藕园/留园·园林一隅</li></ul></div>
+<div class="info-card"><h4>🚇 交通</h4><ul><li>打车到淮海街10min</li><li>苏州站→上海高铁30min</li></ul></div>
+<div class="info-card"><h4>⏰ 时间</h4><ul><li>藕园/留园07:30-17:00</li></ul></div>
+</div>
+
+<p style="text-align:center;margin-top:12px;padding:10px;background:var(--gold-light);border-radius:8px;font-size:13px;font-weight:600;">→ 中午抵达上海，接【上海攻略 DAY 1】静安寺×张园×巨富长×愚园路</p>
+</div></div>
+</section>
+
+<!-- ========================================= -->
+<!-- SHANGHAI DAY 1-7 -->
+<!-- ========================================= -->
+<div id="sh-days"></div>
+<script>
+const shDays = [
+  { id:'sh1', num:1, date:'June 29 · Sun', title:'静安寺 × 张园 × 巨富长 × 愚园路', theme:'🍂 法式梧桐光影 · 石库门新演绎 · 摩登静安夜景',
+    intro:[
+      ['🏛️','张园','上海第一座公共花园（1882年），曾是清末民初最时髦的游乐场。2022年修缮重开，石库门×高奢。'],
+      ['🏯','静安寺','始建于三国东吴赤乌年间（247年），上海最古老寺庙之一。金顶铜瓦如金箔闪烁。'],
+      ['🌳','巨富长','巨鹿路×富民路×长乐路黄金三角。法租界梧桐街区，买手店咖啡店密集。'],
+      ['🚶','愚园路','1911年越界筑路，全长约2.5km。咖啡馆甜品店独立品牌密度极高。'],
+    ],
+    tl:[
+      ['14:00','酒店出发→马勒别墅拍城堡📸'],['14:15','张园·石库门建筑群+Butterful面包'],
+      ['15:00','星巴克烘焙工坊·避暑+鲍师傅'],['15:30','巨鹿路·Gregorious SHADE·三立方Dirty'],
+      ['16:15','🍜 沪西老弄堂·蛤蜊猪肝面'],['16:45','静安寺·黄金光线拍金顶📸'],
+      ['17:30','愚园路·Basdban·bebaked📸'],['18:30','🍽️ 家康居酒屋·深夜食堂'],
+      ['19:30','静安寺夜景🌃+阿嬷手作'],['20:00','裕莲茶楼蛋挞·夜宵收尾'],
+    ],
+    food:['家康居酒屋·大沽路·深夜食堂·17:30后','沪西老弄堂·广东路·蛤蜊猪肝面','Basdban·愚园路·芒果三明治','bebaked·愚园路·抹茶蛋挞','Butterful·吴江路·可颂','星巴克烘焙工坊·全球最大','鲍师傅·兴业太古汇·肉松小贝','阿嬷手作·静安寺·小程序提前点','裕莲茶楼蛋挞·常熟路·夜宵收尾'],
+    coffee:['Gregorious SHADE·安福路·Dirty天花板','三立方Dirty·永康路58号','Spot Table·陕西北路457号','Metal Hands·南京西路/襄阳南路'],
+    photos:['🥇 静安寺金顶·16:30-17:00·古今对比🏆','🥇 张园石库门通道·14:30-15:00·纵深光影','🥈 巨鹿路×富民路梧桐影','🥈 愚园路街景·生活方式感'],
+  },
+  { id:'sh2', num:2, date:'June 30 · Mon', title:'武康路 × 永嘉路咖啡宇宙 × 新天地', theme:'🎬 老电影质感 · 梧桐光影 · 上海咖啡宇宙',
+    intro:[
+      ['🌳','武康路','法租界1907年筑路，原名福开森路。邬达克建筑密集，「上海最像巴黎」。'],
+      ['🏢','武康大楼','1924年邬达克设计，原名诺曼底公寓。上海第一座外廊式公寓大楼。'],
+      ['☕','永嘉路咖啡宇宙','上海咖啡密度最高街区。O.P.S·3½·eau顶流特调密集。'],
+      ['🌆','新天地','1999年石库门改造，保留中共一大会址。太平湖夜景极美。'],
+    ],
+    tl:[
+      ['09:30','🚕→武康路·mbd ciabatta🥇'],['10:00','武康大楼📸（早上人最少）'],
+      ['10:00','武康路漫步·邮局→武康庭376号'],['11:00','安福路·Azabuya麻布屋🍦'],
+      ['11:30','☕ Captain George·SOE拿铁'],['12:30','🍽️ Bijou·精致Bistro'],
+      ['14:00','🏆 咖啡四连·3½→O.P.S→eau→Asap'],['15:00','🥟 味香斋·东泰祥·小杨生煎'],
+      ['17:00','🛍️ TX淮海·潮流地标'],['18:30','🌆 新天地晚餐+夜景'],
+    ],
+    food:['mbd·华山路·ciabatta⚠️周二休','味香斋·雁荡路·麻酱面','东泰祥·陕西南路·非遗生煎','小杨生煎·襄阳南路','大壶春·云南南路','Bijou·安福路·精致Bistro','Crow Jane·永源路','NY Bagel Museum·新天地','Amam小狗面包店·新天地','Sloppy Gin·延平路·甜甜圈'],
+    coffee:['Seesaw·武康路','Manner·永嘉路','Captain George·安福路·SOE拿铁','3½·太原路','O.P.S·太原路·特调·16:00前到','eau·Asap·永嘉路','HONKY TONK·襄阳南路','Alley 3·永嘉路'],
+    photos:['🥇 武康大楼·09:30-10:00·广角拍全貌🏆','🥇 武康路梧桐影·10:00-12:00','🥈 永嘉路咖啡街景','🥈 新天地夜景·19:30-20:00'],
+    extra:'🛍️ iapm·陕西南路 ⚠️ O.P.S 16:00前到 ⚠️ 人和馆排队极长 🌃 新天地石库门夜景',
+  },
+  { id:'sh3', num:3, date:'July 1 · Tue', title:'外滩 × 苏州河 × 陆家嘴 × 轮渡夜景', theme:'🌃 赛博未来感 · 万国建筑 · 时空蒙太奇',
+    intro:[
+      ['🗼','上海中心','中国第一高楼632m（2015年），118层「上海之巅」观景厅。电梯18m/s。'],
+      ['📚','朵云书院','上海中心52F，中国最高书店。点饮料入场俯瞰陆家嘴。⚠️需预约。'],
+      ['🌇','外滩','1.5km沿江52栋万国建筑（1890s-1930s）。蓝色时刻19:00-19:30亮灯。'],
+      ['🚢','2元轮渡','金陵东路→东昌路·¥2·二楼甲板拍两岸灯火。性价比最高夜景。'],
+    ],
+    tl:[
+      ['09:30','🚇→人民广场'],['09:45','🏛️ 城市规划展示馆·沙盘'],
+      ['10:45','南京东路·鲜得来·莱莱小笼'],['11:45','📸 沙美大楼·经典楼梯机位'],
+      ['12:30','☕ Sillage·洛克外滩源'],['14:00','🚇→陆家嘴·IFC空中花园🏆'],
+      ['16:45','📸 外滩·白渡桥→乍浦路桥🏆'],['18:00','苏州河Citywalk·洛克外滩源'],
+      ['19:00','🚢 2元轮渡·蓝色时刻🌃'],['19:30','🍜 福和面馆+🧋去茶山'],
+    ],
+    food:['IFC:Shake Shack·Lady M·Greybox','福和面馆·天潼路·本帮浇头','毒蛇面馆·九江路·备选','鲜得来·南京东路·排骨年糕','莱莱小笼·天津路·蟹粉','cococean·IFC·椰子冻','沪西老弄堂(二刷)'],
+    coffee:['%Arabica·陆家嘴','Manner·陆家嘴','Sillage·洛克外滩源','🧋 去茶山·外滩/南京东路·贵州鲜奶茶'],
+    photos:['🥇 外滩蓝色时刻·19:00-19:30🏆','🥇 乍浦路桥·16:30-17:00·纽约感','🥈 IFC空中花园·三件套角度','🥈 陆家嘴天桥·17:00-18:00'],
+    extra:'🛍️ IFC·国金·正大 ✂️ 可删迪士尼旗舰店 🌃 外滩🏆+🚢2元轮渡+北外滩可选',
+  },
+  { id:'sh4', num:4, date:'July 2 · Wed', title:'徐家汇书院 × 衡山路 × 武康庭 × 安福路', theme:'🎨 欧洲大学城 · 当代美术馆 · 江边夕阳',
+    intro:[
+      ['📖','徐家汇书院','2023年新开放。巴西利卡中庭「光之穹顶」玻璃天窗。地下有明代天文台遗址。'],
+      ['🌳','衡山路','法租界1922年筑路，西班牙/英式老洋房林立。最舒服的散步路线。'],
+      ['🏡','武康庭','武康路376号，前身上海仪表厂。红砖老厂房+玻璃盒子混搭。'],
+      ['🛍️','安福路','原名巨泼来斯路，上海街拍文化最浓厚，年轻人最爱街区。'],
+    ],
+    tl:[
+      ['10:00','🚇 2→1号线到徐家汇'],['10:30','🏛️ 徐家汇书院·中庭📸'],
+      ['11:30','⛪ 徐家汇天主堂·门口拍照'],['11:45','衡山坊→余庆路·梧桐隧道'],
+      ['12:45','🍽️ 美罗城内午餐'],['15:00','🖼️ 西岸美术馆·免费展览'],
+      ['17:00','🌇 西岸滨江日落·陆家嘴天际线'],['18:00','🍽️ 西岸附近Bistro'],
+      ['19:00','🍞 folder法棍set收尾'],
+    ],
+    food:['衡山小馆·经典上海菜','Lost Bakery·安福路·可颂','Alimentari·安福路·意式小馆','la Boulangerie·建国西路·法棍','folder·乌鲁木齐南路·法棍set'],
+    coffee:['Manner·安福路','Seesaw·安福路','Blue Bottle·港汇恒隆/西岸梦中心','Pari Coffee·衡山路'],
+    photos:['🥇 徐家汇书院中庭·10:00-11:00🏆','🥇 西岸江边日落·17:00-18:00🏆','🥈 衡山路老洋房·树荫光影','🥈 西岸美术馆外墙·混凝土光影'],
+    extra:'🛍️ iapm避暑 ✂️ 可删龙华寺/西岸部分 🌃 西岸日落/安福路夜景',
+  },
+  { id:'sh5', num:5, date:'July 3 · Thu', title:'思南公馆 × 豫园 × 苏州河', theme:'🌸 《繁花》氛围 · 老上海电影感 · 水边漫步',
+    intro:[
+      ['🌊','苏州河','上海母亲河125km，沿河30+座桥。近年贯通成Citywalk首选。'],
+      ['🏛️','思南公馆','1920s法租界51栋花园洋房。《繁花》取景地。红砖+暖黄路灯电影感。'],
+      ['🏯','豫园','明嘉靖1559年建。九曲桥「走九曲·祛百病」。灯笼倒影第一机位。'],
+      ['📬','邮政博物馆','1924年英国古典主义。「上海之窗」拍三件套。⚠️周一二闭馆。'],
+    ],
+    tl:[
+      ['10:00','🚇 2→13号线马当路'],['10:30','恒基旭辉天地·红色建筑📸'],
+      ['11:00','🏢 小红书大楼'],['12:30','🍽️ Yayas/蜂蜜草/Hey Guac午餐'],
+      ['14:00','🏛️ 思南公馆·红砖📸🏆'],['15:30','🚶 田子坊（人多可跳过）'],
+      ['16:00','📬 邮政博物馆·上海之窗📸'],['16:30','🏯 豫园+城隍庙'],
+      ['18:00','📸 九曲桥亮灯·灯笼倒影🏆'],['18:30','🍽️ 上海老饭店·本帮菜'],
+    ],
+    food:['上海老饭店·豫园·本帮菜','Yayas·新天地·地中海','蜂蜜草·新天地·轻食','Hey Guac·新天地·墨西哥'],
+    coffee:['Blue Bottle·静安嘉里/张园店','Manner·北外滩白玉兰(江景)','%Arabica·虹口滨江'],
+    photos:['🥇 豫园九曲桥·18:00-18:30·灯笼倒影🏆','🥇 思南公馆·14:00-15:00·红砖梧桐🏆','🥈 乍浦路桥·16:30-17:00','🥈 邮政博物馆·上海之窗'],
+    extra:'🛍️ 新天地·北外滩来福士 ✂️ 可删田子坊 🌃 豫园亮灯+外滩夜景一网打尽',
+  },
+  { id:'sh6', num:6, date:'July 4 · Fri', title:'前滩太古里 × 上海博物馆东馆', theme:'🏙️ 首尔+新加坡 Marina Bay · 未来建筑',
+    intro:[
+      ['🏙️','前滩太古里','2021年开业。「立体森林」开放式街区，5+design设计。'],
+      ['🏛️','博物馆东馆','2024年新开放，鼎形金属外立面。常设展全免费。⚠️提前7天预约。'],
+      ['⛩️','龙华寺','上海最古寺之一，始建三国247年。龙华塔为上海最古塔（北宋重建）。'],
+    ],
+    tl:[
+      ['10:00','🚇 2→8→6东方体育中心'],['10:45','🏬 前滩太古里·出片📸'],
+      ['12:30','🍽️ 太古里内Bistro午餐'],['14:00','🏛️ 上海博物馆东馆·提前预约'],
+      ['17:00','☕ 咖啡补给'],['19:00','🥚 定西路蛋饼摊·最后一晚'],
+    ],
+    food:['Shake Shack·前滩太古里','Blue Bottle·前滩·09:00-20:00','M Stand·前滩·10:00-22:00','阿嬷手作·前滩太古里店','定西路蛋饼摊·19:00传奇收尾'],
+    coffee:['Manner·前滩·08:00-20:00'],
+    photos:['🥇 前滩太古里玻璃天桥·10:00-11:00🏆','🥈 前滩太古里中庭·11:00-12:00','🥈 博物馆东馆外立面·鼎形建筑'],
+    extra:'🛍️ 前滩太古里·西岸艺术区 ✂️ 可删龙华寺 🌃 前滩太古里玻璃反射夜景',
+  },
+  { id:'sh7', num:7, date:'July 5 · Sat', title:'南京西路 × 吴江路 × 回程 ✈️', theme:'🛫 轻松收尾 · 13:00离店 · 16:00飞新加坡',
+    intro:[
+      ['🛍️','南京西路','恒隆·嘉里·芮欧，上海顶级商业街区。从酒店步行即达。'],
+      ['🥟','吴江路','小杨生煎发源地（1994年）。生煎三巨头齐聚。'],
+      ['🌳','人民公园','1902年开放，市中心最大绿地。相亲角闻名。'],
+    ],
+    tl:[
+      ['08:00','😴 睡到自然醒·收拾行李'],['09:30','🏨 退房+行李寄存酒店'],
+      ['10:00','🚶 静安寺周边最后扫街'],['10:30','🥟 东泰祥/大壶春·最后味道'],
+      ['11:00','☕ 最后咖啡·三立方Dirty'],['12:00','🛍️ 鲍师傅伴手礼'],
+      ['13:00','🚕 →浦东机场·50-60min·¥180-220'],['16:00','✈️ 起飞回新加坡！'],
+    ],
+    food:['小杨生煎·吴江路创始店','东泰祥·重庆北路24h·非遗生煎','大壶春·四川中路总店','Shake Shack·静安嘉里中心'],
+    coffee:['三立方Dirty·静安寺','Metal Hands·南京西路','🧁 鲍师傅·兴业太古汇·伴手礼'],
+    photos:['🥇 南京西路街景·10:00-11:00','🥈 吴江路生活气息街景','🥈 人民公园树荫·14:00-15:00'],
+    extra:'🛍️ 恒隆广场·静安嘉里中心(最后补货) ✂️ 可删人民公园 🌃 赶飞机不安排夜景',
+  },
+];
+
+for (const d of shDays) {
+  const section = document.createElement('section');
+  section.className = 'section';
+  section.id = d.id;
+  section.innerHTML = `
+    <div class="section-header"><span class="emoji">🗓️</span><h2>上海 Day ${d.num}</h2><span class="date-badge">${d.date}</span></div>
+    <div style="font-size:13px;color:var(--text-light);margin:-12px 0 16px;">${d.title}</div>
+    <div class="day-card">
+      <div class="day-header">
+        <span class="label">SHANGHAI DAY ${d.num}</span><span class="date">${d.date}</span>
+        <h3>${d.title}</h3>
+        <div class="theme">${d.theme}</div>
+      </div>
+      <div class="day-body">
+        <div class="intro-list">${d.intro.map(i => `<div class="intro-item"><span class="emoji">${i[0]}</span><div class="text"><strong>${i[1]}</strong> · ${i[2]}</div></div>`).join('')}</div>
+        <h4 style="font-size:13px;margin:12px 0 8px;">⏱ 动线</h4>
+        <div class="timeline">${d.tl.map(t => `<div class="tl-item"><span class="tl-time">${t[0]}</span><span class="tl-activity">${t[1]}</span></div>`).join('')}</div>
+        <div class="info-grid">
+          <div class="info-card"><h4>🍜 餐食</h4><ul>${d.food.map(f => `<li>${f}</li>`).join('')}</ul></div>
+          <div class="info-card"><h4>☕ 咖啡</h4><ul>${d.coffee.map(f => `<li>${f}</li>`).join('')}</ul></div>
+          <div class="info-card"><h4>📸 必拍机位</h4><ul>${d.photos.map(f => `<li>${f}</li>`).join('')}</ul></div>
+          <div class="info-card"><h4>🛍️ 逛街+夜景</h4><ul>${d.extra ? `<li>${d.extra}</li>` : '<li>看当天体力自由组合</li>'}</ul></div>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('sh-days').appendChild(section);
+}
+</script>
+
+<!-- ========================================= -->
+<!-- SHOPPING -->
+<!-- ========================================= -->
+<section class="section" id="shopping">
+<div class="section-header"><span class="emoji">🛍️</span><h2>逛街篇 · 上海最值得逛的8个区域</h2></div>
+
+<div class="shop-grid">
+<div class="shop-card"><div class="shop-header">1 南京西路商圈<span class="day-tag">Day 1·7</span></div><div class="shop-body">🚇 南京西路站(2/12/13) ⏰ 10:00-22:00<br>恒隆广场·静安嘉里中心·芮欧百货<br>高奢·生活方式·潮流品牌<br>🛍️ COS·优衣库·Lululemon·Gentle Monster·Blue Bottle·星巴克烘焙工坊</div></div>
+<div class="shop-card"><div class="shop-header">2 静安寺周边<span class="day-tag">Day 1·7</span></div><div class="shop-body">🚇 静安寺站(2/7) ⏰ 10:00-22:00<br>吴江路·张园·巨富长<br>小吃·高奢×石库门·买手店<br>🛍️ Butterful·Manner·Seesaw·小杨生煎·Shake Shack</div></div>
+<div class="shop-card"><div class="shop-header">3 淮海中路<span class="day-tag">Day 2·4</span></div><div class="shop-body">🚇 陕西南路站(1/10/12) ⏰ 10:00-22:00<br>iapm·K11·新天地<br>时尚·艺术×商场·石库门×夜景<br>🛍️ 优衣库全球旗舰店·Seesaw·Manner·鼎泰丰</div></div>
+<div class="shop-card"><div class="shop-header">4 安福路×武康路<span class="day-tag">Day 2·4</span></div><div class="shop-body">🚇 常熟路站(1/7) ⏰ 街区全天可逛<br>咖啡甜品独立品牌密集·文艺·街拍<br>🛍️ Lost Bakery·Alimentari·Manner·Seesaw·独立设计品牌</div></div>
+<div class="shop-card"><div class="shop-header">5 徐家汇<span class="day-tag">Day 4</span></div><div class="shop-body">🚇 徐家汇站(1/9/11) ⏰ 10:00-22:00<br>美罗城(潮流)·港汇恒隆(高奢)·太平洋(传统)·徐家汇书院(最美图书馆)<br>🛍️ Apple Store·优衣库·书店·咖啡馆</div></div>
+<div class="shop-card"><div class="shop-header">6 陆家嘴<span class="day-tag">Day 3</span></div><div class="shop-body">🚇 陆家嘴站(2) ⏰ 10:00-22:00<br>IFC·国金中心·正大广场<br>高奢·高端·餐饮多<br>🛍️ Shake Shack·Lady M·Greybox Coffee·迪士尼旗舰店</div></div>
+<div class="shop-card"><div class="shop-header">7 北外滩来福士<span class="day-tag">Day 5</span></div><div class="shop-body">🚇 天潼路站(10/12) ⏰ 10:00-22:00<br>新·干净·现代·餐饮强·咖啡强·靠近滨江<br>🛍️ M Stand·Shake Shack·Blue Bottle·生活方式品牌</div></div>
+<div class="shop-card"><div class="shop-header">8 前滩太古里<span class="day-tag">Day 6</span></div><div class="shop-body">🚇 东方体育中心站(6/8/11) ⏰ 10:00-22:00<br>上海最新·最未来感·玻璃金属线条·非常适合拍照<br>🛍️ Blue Bottle·M Stand·轻奢品牌·生活方式店铺</div></div>
+</div>
+</section>
+
+<!-- ========================================= -->
+<!-- NIGHT VIEWS -->
+<!-- ========================================= -->
+<section class="section" id="night">
+<div class="section-header"><span class="emoji">🌃</span><h2>上海夜景全攻略</h2><span class="date-badge">蓝色时刻19:00-19:30</span></div>
+
+<div class="night-tier">
+<h3>TIER 1 · 世界级夜景</h3>
+<div class="night-item"><span class="num">1️⃣</span><div class="text"><strong>外滩万国建筑群亮灯</strong><br>外滩观景台 · <span class="time">19:00-19:30</span> · 52栋建筑同时亮灯，蓝色时刻最美</div></div>
+<div class="night-item"><span class="num">2️⃣</span><div class="text"><strong>陆家嘴三件套</strong><br>IFC空中花园免费 · <span class="time">19:00-20:00</span> · 仰拍压迫感</div></div>
+<div class="night-item"><span class="num">3️⃣</span><div class="text"><strong>🚢 2元轮渡夜景</strong><br>金陵东路→东昌路 · ¥2 · 二楼甲板拍两岸灯火</div></div>
+</div>
+
+<div class="night-tier">
+<h3>TIER 2 · 城市蒙太奇 + TIER 3 · 氛围感</h3>
+<div class="night-item"><span class="num">4️⃣</span><div class="text"><strong>乍浦路桥</strong> · 「上海最像纽约」· 日落前后</div></div>
+<div class="night-item"><span class="num">5️⃣</span><div class="text"><strong>静安寺金顶夜景</strong> · 金顶+高楼+车流光轨</div></div>
+<div class="night-item"><span class="num">6️⃣</span><div class="text"><strong>豫园九曲桥亮灯</strong> · 灯笼倒影·拍汉服第一名</div></div>
+<div class="night-item"><span class="num">7️⃣</span><div class="text"><strong>苏州河Citywalk</strong> · 洛克外滩源→虹书舫→乍浦路桥</div></div>
+<div class="night-item"><span class="num">8️⃣</span><div class="text"><strong>思南公馆</strong> · 红砖老洋房+暖黄路灯·《繁花》氛围</div></div>
+<div class="night-item"><span class="num">9️⃣</span><div class="text"><strong>新天地石库门</strong> · 夜间散步·夜生活审美天花板</div></div>
+<div class="night-item"><span class="num">🔟</span><div class="text"><strong>北外滩滨江</strong> · 人最少的外滩·看陆家嘴正面全景</div></div>
+</div>
+
+<div class="day-card">
+<div class="day-header" style="background:var(--dark2);">
+  <h3 style="color:var(--gold);font-size:15px;">🏆 夜景组合推荐</h3>
+</div>
+<div class="day-body">
+<ul class="combo-list">
+<li><div class="combo-title">🌆 经典上海（最震撼）</div><div class="combo-route">外滩→乍浦路桥→苏州河→轮渡</div><div class="combo-day">→ Day 3</div></li>
+<li><div class="combo-title">🏯 老上海电影感</div><div class="combo-route">思南公馆→新天地→豫园九曲桥</div><div class="combo-day">→ Day 5</div></li>
+<li><div class="combo-title">🏙️ 未来主义</div><div class="combo-route">IFC空中花园→陆家嘴三件套→朵云书院</div><div class="combo-day">→ Day 3</div></li>
+<li><div class="combo-title">🍂 安静文艺</div><div class="combo-route">西岸江边日落→北外滩夜景</div><div class="combo-day">→ Day 4 / 6</div></li>
+<li><div class="combo-title">🌸 《繁花》氛围</div><div class="combo-route">思南公馆→外白渡桥→乍浦路桥</div><div class="combo-day">→ Day 5</div></li>
+</ul>
+</div></div>
+</section>
+
+<!-- ========================================= -->
+<!-- TOP 10 -->
+<!-- ========================================= -->
+<section class="section" id="top10">
+<div class="section-header"><span class="emoji">📸</span><h2>全篇 TOP 10 出片机位</h2></div>
+<ol class="top-list">
+<li><div class="top-info"><div class="top-name">乍浦路桥</div><div class="top-desc">陆家嘴同框·纽约感</div></div><div class="top-time">16:30-17:00</div></li>
+<li><div class="top-info"><div class="top-name">武康大楼正面</div><div class="top-desc">广角拍全貌·人少</div></div><div class="top-time">09:30-10:00</div></li>
+<li><div class="top-info"><div class="top-name">外滩蓝色时刻</div><div class="top-desc">城市最柔软的30分钟</div></div><div class="top-time">19:00-19:30</div></li>
+<li><div class="top-info"><div class="top-name">静安寺金顶+高楼</div><div class="top-desc">从愚园路方向拍古今对比</div></div><div class="top-time">16:30-17:00</div></li>
+<li><div class="top-info"><div class="top-name">IFC空中花园</div><div class="top-desc">免费高空机位·三件套角度</div></div><div class="top-time">14:00-15:00</div></li>
+<li><div class="top-info"><div class="top-name">张园石库门通道</div><div class="top-desc">纵深+光影</div></div><div class="top-time">14:30-15:00</div></li>
+<li><div class="top-info"><div class="top-name">西岸美术馆江边</div><div class="top-desc">江边日落剪影</div></div><div class="top-time">17:00-18:00</div></li>
+<li><div class="top-info"><div class="top-name">思南公馆老洋房</div><div class="top-desc">红砖墙+梧桐光影</div></div><div class="top-time">14:00-15:00</div></li>
+<li><div class="top-info"><div class="top-name">豫园九曲桥亮灯</div><div class="top-desc">灯笼倒影·旗袍机位</div></div><div class="top-time">18:00-18:30</div></li>
+<li><div class="top-info"><div class="top-name">外滩轮渡蓝色时刻</div><div class="top-desc">两岸灯火+尾波</div></div><div class="top-time">19:00-19:30</div></li>
+</ol>
+</section>
+
+<!-- ========================================= -->
+<!-- STORE HOURS -->
+<!-- ========================================= -->
+<section class="section" id="hours">
+<div class="section-header"><span class="emoji">⏰</span><h2>全店营业时间表</h2></div>
+<div class="info-grid">
+<div class="info-card"><h4>☕ 咖啡</h4><table class="hours-table"><tr><td>Manner</td><td>08:00-20:00</td></tr><tr><td>Seesaw</td><td>09:00-20:00</td></tr><tr><td>Blue Bottle</td><td>09:00-19:00</td></tr><tr><td>%Arabica</td><td>08:00-20:00</td></tr><tr><td>星巴克烘焙工坊</td><td>08:00-22:00</td></tr></table></div>
+<div class="info-card"><h4>🥟 小吃</h4><table class="hours-table"><tr><td>小杨生煎</td><td>07:00-21:00</td></tr><tr><td>东泰祥</td><td>07:00-21:00(部分24h)</td></tr><tr><td>大壶春</td><td>07:00-19:30</td></tr></table></div>
+<div class="info-card"><h4>🍕 餐厅</h4><table class="hours-table"><tr><td>Shake Shack</td><td>10:00-22:00</td></tr><tr><td>鼎泰丰</td><td>10:00-21:00</td></tr><tr><td>Element Fresh</td><td>10:00-22:00</td></tr><tr><td>Alimentari</td><td>11:00-22:00</td></tr><tr><td>衡山小馆</td><td>11:00-21:00</td></tr></table></div>
+<div class="info-card"><h4>🏬 商场</h4><table class="hours-table"><tr><td>恒隆广场</td><td>10:00-22:00</td></tr><tr><td>静安嘉里中心</td><td>10:00-22:00</td></tr><tr><td>iapm</td><td>10:00-23:00</td></tr><tr><td>IFC</td><td>10:00-22:00</td></tr><tr><td>前滩太古里</td><td>10:00-22:00</td></tr></table></div>
+<div class="info-card full-width">
+  <h4>⚡ 特别提醒</h4>
+  <ul>
+    <li>O.P.S特调咖啡16:00前常售罄，建议早点去</li>
+    <li>家康居酒屋17:30后才开门，只做晚餐</li>
+    <li>交响音乐博物馆提前3天12:00抢票</li>
+    <li>mbd恰巴塔周二店休！注意避开</li>
+    <li>阿嬷手作小程序提前点单，免排队</li>
+  </ul>
+</div>
+</div>
+</section>
+
+<!-- ========================================= -->
+<!-- CHAIN STORES -->
+<!-- ========================================= -->
+<section class="section" id="chains">
+<div class="section-header"><span class="emoji">🏪</span><h2>连锁品牌分店一览</h2></div>
+
+<div class="chain-group"><h4>☕ Manner Coffee <span class="tag">上海1000+直营店</span></h4><p>路线：芮欧百货B2(南京西路)·静安嘉里中心·北外滩白玉兰(江景)·国客滨江店·前滩太古里·安福路·永嘉路·陆家嘴·武康路<br>💡 走两步就有一家，就近喝</p></div>
+<div class="chain-group"><h4>☕ Blue Bottle 蓝瓶咖啡 <span class="tag">上海12家</span></h4><p>裕通店(静安·内地首店)·静安嘉里中心·张园店·前滩太古里·西岸梦中心·港汇恒隆(徐家汇)·国金中心(浦东)·上生新所(长宁)</p></div>
+<div class="chain-group"><h4>🥟 小杨生煎 <span class="tag">1994年创始·50+分店</span></h4><p>吴江路创始店(178号)·吴江路老店(54-60号)·南京东路第一食品商店·芮欧百货B2·几乎所有商圈有分店</p></div>
+<div class="chain-group"><h4>🥟 大壶春 <span class="tag">1932年创始·发面生煎</span></h4><p>四川中路总店·云南南路89号·豫园店·浙江中路</p></div>
+<div class="chain-group"><h4>🥟 东泰祥 <span class="tag">非遗半发酵生煎</span></h4><p>重庆北路总店(24h·非遗)·陕西南路·长宁路king88·南洋1931</p></div>
+<div class="chain-group"><h4>🍔 Shake Shack <span class="tag">来自纽约</span></h4><p>新天地(内地首店)·IFC国金·静安嘉里中心·前滩太古里·港汇恒隆(徐家汇)</p></div>
+<div class="chain-group"><h4>🍕 Alimentari <span class="tag">意式杂货铺+Bistro</span></h4><p>安福路(首店)·东湖路(Grande大店)·康定路(Grill·陕康里)</p></div>
+<div class="chain-group"><h4>🧋 阿嬷手作 <span class="tag">广西手作奶茶·上海13店</span></h4><p>IFC国金中心·兴业太古汇·新天地·港汇恒隆·前滩太古里·长宁来福士<br>💡 小程序提前点单，免排队</p></div>
+<div class="chain-group"><h4>🧋 去茶山 <span class="tag">贵州茶饮</span></h4><p>外滩·南京东路·兴业太古汇</p></div>
+</section>
+
+<!-- ========================================= -->
+<!-- SHOP ALLOCATION TABLE -->
+<!-- ========================================= -->
+<section class="section" id="allocation">
+<div class="section-header"><span class="emoji">📋</span><h2>所有店铺分配一览</h2><span class="date-badge">快速查阅每天去哪些店</span></div>
+
+<div class="info-grid">
+<div class="info-card"><h4>🍜 面食生煎</h4><ul>
+<li>沪西老弄堂 → Day1/3 · 广东路/南京东路</li>
+<li>味香斋 → Day2 · 雁荡路14号·麻酱面</li>
+<li>福和面馆 → Day3 · 天潼路·本帮浇头</li>
+<li>毒蛇面馆 → Day3备选·九江路</li>
+<li>鲜得来 → Day3 · 南京东路·排骨年糕</li>
+<li>东泰祥 → Day2/7 · 陕西南路/重庆北路(24h)</li>
+<li>小杨生煎 → Day2/7 · 吴江路创始店</li>
+<li>大壶春 → Day2/7 · 四川中路/云南南路</li>
+<li>莱莱小笼 → Day3 · 天津路·蟹粉</li>
+</ul></div>
+<div class="info-card"><h4>🍞 面包甜品</h4><ul>
+<li>Basdban🥇 → Day1 · 愚园路·芒果三明治</li>
+<li>bebaked → Day1 · 愚园路·抹茶蛋挞</li>
+<li>Butterful → Day1 · 吴江路</li>
+<li>鲍师傅 → Day1/7 · 兴业太古汇/静安寺</li>
+<li>mbd🥇 → Day2 · 华山路·ciabatta⚠️周二休</li>
+<li>la Boulangerie → Day4 · 建国西路·法棍</li>
+<li>Amam小狗 → Day2 · 新天地</li>
+<li>Punch Monday → Day2 · 新天地</li>
+<li>Sloppy Gin🍩 → Day2 · 延平路·甜甜圈</li>
+<li>nunu donut🍩 → Day2 · 永嘉路</li>
+<li>folder → Day4 · 乌鲁木齐南路·法棍set</li>
+</ul></div>
+<div class="info-card"><h4>☕ 咖啡宇宙</h4><ul>
+<li>Gregorious SHADE → Day1/2 · 安福路·Dirty</li>
+<li>Metal Hands → Day1/2 · 南京西路/襄阳南路</li>
+<li>三立方Dirty → Day1/7 · 永康路/静安寺</li>
+<li>Captain George → Day2 · 安福路·SOE拿铁</li>
+<li>3 1/2 → Day2 · 太原路</li>
+<li>O.P.S⚠️ → Day2 · 太原路·16:00前到</li>
+<li>eau → Day2 · 永嘉路</li>
+<li>Asap → Day2 · 永嘉路·维也纳咖啡</li>
+<li>Spot table → Day2 · 陕西北路</li>
+<li>HONKY TONK → Day2 · 襄阳南路</li>
+<li>Sillage → Day3 · 洛克外滩源</li>
+<li>星巴克烘焙工坊 → Day1 · 兴业太古汇</li>
+</ul></div>
+<div class="info-card"><h4>🧋 饮品甜品</h4><ul>
+<li>阿嬷手作 → Day1/3 · 静安寺/外滩(13店)</li>
+<li>裕莲茶楼蛋挞 → Day1 · 常熟路</li>
+<li>Take me away → Day2 · 永嘉路·提拉米苏</li>
+<li>cococean🥥 → Day3 · IFC</li>
+<li>去茶山 → Day3 · 外滩/南京东路</li>
+<li>楼下酸奶 → Day2 · 襄阳南路</li>
+<li>Azabuya → Day2 · 安福路·麻布屋</li>
+<li>Sit Gelato → Day2 · 永源路</li>
+</ul></div>
+<div class="info-card"><h4>🍽️ 漂亮饭</h4><ul>
+<li>家康居酒屋 → Day1 · 大沽路⚠️17:30后</li>
+<li>Bijou → Day2 · 安福路·Bistro</li>
+<li>Crow Jane → Day2 · 永源路</li>
+<li>NY Bagel Museum → Day2 · 新天地</li>
+<li>Yayas → Day2/5 · 新天地·地中海</li>
+<li>蜂蜜草 → Day2/5 · 新天地·轻食</li>
+<li>Hey Guac🥑 → Day2/5 · 新天地·墨西哥</li>
+<li>人和馆 → Day2备选·安福路⚠️排队</li>
+</ul></div>
+</div></section>
+
+<!-- ========================================= -->
+<!-- MAGLEV + BONUS -->
+<!-- ========================================= -->
+<section class="section" id="maglev">
+<div class="section-header"><span class="emoji">🚄</span><h2>回程磁浮说明</h2></div>
+<div class="day-card"><div class="day-body">
+<div class="info-grid">
+<div class="info-card full-width">
+  <h4>🚇 路线</h4>
+  <p style="font-size:13px;">静安康柏酒店 → 地铁2号线 → 龙阳路站 → 换乘磁浮</p>
+</div>
+<div class="info-card"><h4>💰 票价</h4><ul><li>单程50元</li><li>凭机票40元优惠价</li></ul></div>
+<div class="info-card"><h4>⏰ 运营</h4><ul><li>06:45-21:40</li><li>全程仅8分钟</li></ul></div>
+<div class="info-card"><h4>✅ 适合</h4><ul><li>赶时间</li><li>想体验磁浮</li><li>不想坐1h出租车</li></ul></div>
+<div class="info-card"><h4>❌ 不适合</h4><ul><li>行李非常多</li><li>赶早班机(06:45前)</li></ul></div>
+</div>
+</div></div>
+</section>
+
+<!-- ========================================= -->
+<!-- BONUS -->
+<!-- ========================================= -->
+<section class="section" id="bonus">
+<div class="section-header"><span class="emoji">🌉</span><h2>BONUS · 北外滩 Citywalk</h2><span class="date-badge">可替代Day6或单独一天</span></div>
+
+<div class="day-card">
+<div class="day-body">
+<h4 style="font-size:13px;margin-bottom:8px;">⏱ 动线</h4>
+<div class="timeline">
+<div class="tl-item"><span class="tl-time">13:00</span><span class="tl-activity">🚇 2号线到陆家嘴→迪士尼旗舰店</span></div>
+<div class="tl-item"><span class="tl-time">14:00</span><span class="tl-activity">🏛️ 外滩万国建筑群漫步</span></div>
+<div class="tl-item"><span class="tl-time">14:30</span><span class="tl-activity">🌉 外白渡桥→乍浦路桥📸</span></div>
+<div class="tl-item"><span class="tl-time">16:00</span><span class="tl-activity">🚇 转12号线→国际客运中心</span></div>
+<div class="tl-item"><span class="tl-time">16:15</span><span class="tl-activity">🏆 白玉兰广场3F露台·270°观景台·与东方明珠平视</span></div>
+<div class="tl-item"><span class="tl-time">16:45</span><span class="tl-activity">水滴楼·银色镜面倒映对岸📸</span></div>
+<div class="tl-item"><span class="tl-time">17:00</span><span class="tl-activity">☕ Maner咖啡旁桥洞·低角度拍三件套🏆</span></div>
+<div class="tl-item"><span class="tl-time">19:00</span><span class="tl-activity">北外滩滨江绿地·正面三件套🏆</span></div>
+<div class="tl-item"><span class="tl-time">19:30</span><span class="tl-activity">小巨蛋天桥·倒影反转拍三件套</span></div>
+</div>
+
+<div class="bonus-tips">
+<h4>📸 出片机位</h4>
+<p>🥇 白玉兰广场3F露台 · 🥇 Maner咖啡旁桥洞 · 🥇 国际客运码头正面三件套 · 🥇 小巨蛋天桥倒影<br>
+📌 最美转角花店（新艺花航）拿鲜花当道具 · 📌 水滴楼银色镜面建筑</p>
+</div>
+</div></div>
+</section>
+
+<!-- ========================================= -->
+<!-- FOOTER -->
+<!-- ========================================= -->
+<footer class="footer">
+  <h2>ENJOY YOUR <span class="gold">SUZHOU + SHANGHAI</span></h2>
+  <p style="color:rgba(255,255,255,0.6);margin:12px 0 4px;font-size:14px;">CITYWALK</p>
+  <p style="color:rgba(255,255,255,0.3);font-size:12px;">梧桐光影 · 法式摩登 · 未来天际线 · 湖光晚霞</p>
+  <p class="dates">June 27 → July 5, 2026</p>
+</footer>
+
+</body>
+</html>
